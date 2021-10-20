@@ -59,7 +59,7 @@ function Invoke-Process {
             }
             
             # Get Process result 
-            return $process.ExitCode
+            return $process
         }
         finally {
             if ($null -ne $process) { $process.Dispose() }
