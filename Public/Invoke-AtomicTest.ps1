@@ -260,14 +260,18 @@ function Invoke-AtomicTest {
                             $final_command_prereq = Merge-InputArgs $dep.prereq_command $test $InputArgs $PathToPayloads
                             if ($executor -ne "powershell") { $final_command_prereq = ($final_command_prereq.trim()).Replace("`n", " && ") }
                             $final_command_get_prereq = Merge-InputArgs $dep.get_prereq_command $test $InputArgs $PathToPayloads
-                            $res = Invoke-ExecuteCommand $final_command_prereq $executor $TimeoutSeconds $session -Interactive:$true
+                            $process = Invoke-ExecuteCommand $final_command_prereq $executor $TimeoutSeconds $session -Interactive:$true
+                            $res = $process.ExitCode
+                            Write-Host "Process id is ", $process.id
 
                             if ($res -eq 0) {
                                 Write-KeyValue "Prereq already met: " $description
                             }
                             else {
-                                $res = Invoke-ExecuteCommand $final_command_get_prereq $executor $TimeoutSeconds $session -Interactive:$Interactive
-                                $res = Invoke-ExecuteCommand $final_command_prereq $executor $TimeoutSeconds $session -Interactive:$true
+                                $process = Invoke-ExecuteCommand $final_command_get_prereq $executor $TimeoutSeconds $session -Interactive:$Interactive
+                                $process = Invoke-ExecuteCommand $final_command_prereq $executor $TimeoutSeconds $session -Interactive:$true
+                                $res = $process.ExitCode
+                                Write-Host "Process id is ", $process.id
                                 if ($res -eq 0) {
                                     Write-KeyValue "Prereq successfully met: " $description
                                 }
@@ -280,14 +284,14 @@ function Invoke-AtomicTest {
                     elseif ($Cleanup) {
                         Write-KeyValue "Executing cleanup for test: " $testId
                         $final_command = Merge-InputArgs $test.executor.cleanup_command $test $InputArgs $PathToPayloads
-                        $res = Invoke-ExecuteCommand $final_command $test.executor.name $TimeoutSeconds $session -Interactive:$Interactive
+                        $process = Invoke-ExecuteCommand $final_command $test.executor.name $TimeoutSeconds $session -Interactive:$Interactive
                         Write-KeyValue "Done executing cleanup for test: " $testId
                     }
                     else {
                         Write-KeyValue "Executing test: " $testId
                         $startTime = get-date
                         $final_command = Merge-InputArgs $test.executor.command $test $InputArgs $PathToPayloads
-                        $res = Invoke-ExecuteCommand $final_command $test.executor.name $TimeoutSeconds $session -Interactive:$Interactive
+                        $process = Invoke-ExecuteCommand $final_command $test.executor.name $TimeoutSeconds $session -Interactive:$Interactive
                         Write-ExecutionLog $startTime $AT $testCount $test.name $ExecutionLogPath $executionHostname $executionUser $test.auto_generated_guid
                         Write-KeyValue "Done executing test: " $testId
                     }
