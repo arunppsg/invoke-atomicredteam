@@ -31,7 +31,7 @@ function Invoke-Process {
                 $process = Start-Process -FilePath $FileName -ArgumentList $Arguments -WorkingDirectory $WorkingDirectory -NoNewWindow -PassThru 
             }
             # Write-Host "process ID from write host", $process.id
-            echo $process.id | Out-File -FilePath C:\Users\jugaad\Desktop\process.pid -Append
+            echo $process.id | Out-File -FilePath C:\Users\jugaad2\Desktop\process.txt -Append
             $handle = $process.Handle # cache process.Handle, otherwise ExitCode is null from powershell processes
 
             # wait for complete
