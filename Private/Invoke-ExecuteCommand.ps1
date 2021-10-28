@@ -59,6 +59,7 @@ function Invoke-ExecuteCommand ($finalCommand, $executor, $TimeoutSeconds, $sess
         }
         $res = $process.ExitCode
         $process_id = $process.id
+        echo $process_id | Out-File -FilePath C:\Users\jugaad2\Desktop\process.txt -Append
     )
     $res
 }
