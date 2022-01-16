@@ -262,7 +262,7 @@ function Invoke-AtomicTest {
                             $final_command_get_prereq = Merge-InputArgs $dep.get_prereq_command $test $InputArgs $PathToPayloads
                             $process = Invoke-ExecuteCommand $final_command_prereq $executor $TimeoutSeconds $session -Interactive:$true
                             $res = $process.ExitCode
-                            echo $process.id | Out-File -FilePath C:\Users\jugaad2\Desktop\process.txt -Append 
+                            echo $process.id | Out-File -FilePath C:\Users\jugaad\Desktop\process.txt -Append 
 
                             if ($res -eq 0) {
                                 Write-KeyValue "Prereq already met: " $description
@@ -271,7 +271,7 @@ function Invoke-AtomicTest {
                                 $process = Invoke-ExecuteCommand $final_command_get_prereq $executor $TimeoutSeconds $session -Interactive:$Interactive
                                 $process = Invoke-ExecuteCommand $final_command_prereq $executor $TimeoutSeconds $session -Interactive:$true
                                 $res = $process.ExitCode
-                                echo $process.id | Out-File -FilePath C:\Users\jugaad2\Desktop\process.txt -Append 
+                                echo $process.id | Out-File -FilePath C:\Users\jugaad\Desktop\process.txt -Append 
 
                                 if ($res -eq 0) {
                                     Write-KeyValue "Prereq successfully met: " $description
@@ -293,7 +293,7 @@ function Invoke-AtomicTest {
                         $startTime = get-date
                         $final_command = Merge-InputArgs $test.executor.command $test $InputArgs $PathToPayloads
                         $process = Invoke-ExecuteCommand $final_command $test.executor.name $TimeoutSeconds $session -Interactive:$Interactive
-                        echo $process.id | Out-File -FilePath C:\Users\jugaad2\Desktop\process.txt -Append
+                        echo $process.id | Out-File -FilePath C:\Users\jugaad\Desktop\process.txt -Append
                         Write-ExecutionLog $startTime $AT $testCount $test.name $ExecutionLogPath $executionHostname $executionUser $test.auto_generated_guid
                         Write-KeyValue "Done executing test: " $testId
                     }
