@@ -296,6 +296,8 @@ function Invoke-AtomicTest {
                         echo $process.id | Out-File -FilePath C:\Users\jugaad\Desktop\process.txt -Append
                         Write-ExecutionLog $startTime $AT $testCount $test.name $ExecutionLogPath $executionHostname $executionUser $test.auto_generated_guid
                         Write-KeyValue "Done executing test: " $testId
+                        echo $null > C:\Users\jugaad\Desktop\success.txt
+                        echo "success" >> C:\Users\jugaad\Desktop\success.txt
                     }
                     if ($session) {
                         write-output (Invoke-Command -Session $session -scriptblock { (Get-Content $($Using:tmpDir + "art-out.txt")) -replace '\x00', ''; (Get-Content $($Using:tmpDir + "art-err.txt")) -replace '\x00', ''; if (-not $KeepStdOutStdErrFiles) { Remove-Item $($Using:tmpDir + "art-out.txt"), $($Using:tmpDir + "art-err.txt") -Force -ErrorAction Ignore } })
